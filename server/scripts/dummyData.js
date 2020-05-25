@@ -19,7 +19,7 @@ const run = function run() {
         altImages: arr,
       };
       data.push(obj);
-      for(var j = 0; j < 50000; j += 1) {
+      for (let j = 0; j < 50000; j += 1) {
         writer.write(obj);
       }
       arr = [];
