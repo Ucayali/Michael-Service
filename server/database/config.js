@@ -22,11 +22,31 @@ const createItem = function (obj, cb = () => {}) {
     if (err) { cb(err, null); } else { cb(null, 'congrats'); }
   });
 };
+
 const deleteAll = function () {
   Item.deleteMany({}, (err) => {
     if (err) { console.log(err); }
   });
 };
+
+const deleteById = (id, cb) => {
+  Item.deleteOne({ itemId: id }, (err, item) => {
+    if (err) {
+      return cb(err, null);
+    }
+    return cb(null, item);
+  });
+};
+
+const updateById = (id, cb) => {
+  Item.updateOne({ itemId: id }, (err, item) => {
+    if (err) {
+      return cb(err, null);
+    }
+    return cb(null, item);
+  });
+};
+
 const getItem = (id, cb) => {
   Item.findOne({ itemId: id }, (err, item) => {
     if (err) {
@@ -39,5 +59,7 @@ const getItem = (id, cb) => {
 module.exports = {
   createItem,
   deleteAll,
+  deleteById,
   getItem,
+  updateById,
 };

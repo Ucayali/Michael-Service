@@ -50,7 +50,7 @@ If running into syntax errors in seeding script or when starting check node vers
 
 |   Verb    |        Endpoint       |            Action            |
 |-----------| --------------------- | ---------------------------- |
-| **POST**  |       /items/:id      |  CREATE a new item into DB   |
-| **GET**   |       /items/:id      |  READ data and return it     |
-| **PATCH** |       /items/:id      |  UPDATE item with new review |
-| **DELETE**|       /items/:id      |  DELETE item based on URL ID |
+| **POST**  |       /api/items/      |  CREATE a new item into DB   |
+| **GET**   |       /api/items/:id      |  READ data and return it     |
+| **PATCH** |       /api/items/:id      |  UPDATE item with new review |
+| **DELETE**|       /api/items/:id      |  DELETE item based on URL ID |
