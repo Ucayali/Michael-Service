@@ -24,3 +24,7 @@ coverage
 build/
 dist/
 
+
+data.csv
+
+report.20200525.125804.7122.0.001.json
