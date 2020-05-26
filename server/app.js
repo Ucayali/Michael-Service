@@ -39,6 +39,32 @@ app.get('/api/items/:id', (req, res) => {
   });
 });
 
+app.patch('/api/items/:id', (req, res) => {
+  db.updateById(req.params.id, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400);
+      res.end();
+    } else {
+      res.send(data);
+      res.end();
+    }
+  });
+});
+
+app.delete('/api/items/:id', (req, res) => {
+  db.deleteById(req.params.id, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400);
+      res.end();
+    } else {
+      res.send(data);
+      res.end();
+    }
+  });
+});
+
 app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/'));
 });
