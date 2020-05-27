@@ -3,12 +3,13 @@
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 
-var writer = csvWriter({sendHeaders: false})
+var writer = csvWriter()
 
 writer.pipe(fs.createWriteStream('data.csv'));
 
 const data = [];
 let arr = [];
+let counter = 0;
 
 const run = function run() {
   for (let i = 1; i <= 1001; i += 1) {
@@ -19,12 +20,16 @@ const run = function run() {
         altImages: arr,
       };
       data.push(obj);
-      for (let j = 0; j < 50000; j += 1) {
-        writer.write(obj);
+      // j < 50000 for 10mil
+      for (let j = 0; j < 5; j += 1) {
+        counter += 1;
+        writer.write({altImages: arr, itemId: counter});
       }
+
       arr = [];
       arr.push(`https://michaelsdcimages.s3.us-east-2.amazonaws.com/img${i}.jpg`);
     }
+
   }
   arr = [];
   writer.end();
