@@ -40,9 +40,10 @@ class SingleItemPage extends React.Component{
     const id = params.get('id') || 1;
 
     get(id, (data) => {
+      var strSplit = data.altImages[0].split(',')
         this.setState({
-          image:data.altImages[0],
-          mainImages:data.altImages
+          image:strSplit[0],
+          mainImages:strSplit
         });
     })
   }

@@ -1,5 +1,7 @@
 ## MAC files ##
 .DS_Store
+newrelic.js
+env.js
 
 ## NPM ##
 npm
@@ -28,3 +30,9 @@ dist/
 data.csv
 
 report.20200525.125804.7122.0.001.json
+
+data(bad).csv
+
+data2.csv
+
+dataMaybeOk.csv
