@@ -1,10 +1,15 @@
 config:
   target: 'http://localhost:3001'
+  http:
+    pool: 100
   phases:
-    - duration: 10
-      arrivalRate: 100
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 200
+      name: 'warmup'
+
 scenarios:
   - flow:
     - get:
-        url: "/api/items/1"
+        url: "/api/items/5561245"
 
