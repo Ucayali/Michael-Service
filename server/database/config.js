@@ -1,65 +1,59 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-console */
-/* eslint-disable func-names */
-const mongoose = require('mongoose');
+const Promise = require('bluebird');
+Promise.promisifyAll(require("pg"));
 
-const uri = 'mongodb://localhost:27017/singleItemPage?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false';
-mongoose.connect(uri, { useNewUrlParser: true });
-const { Schema } = mongoose;
+const { pgUser, pgPass } = require('./env.js')
 
-
-const itemSchema = new Schema({
-  itemId: Number,
-  altImages: [String],
-});
-
-const Item = mongoose.model('Items', itemSchema);
-
-const createItem = function (obj, cb = () => {}) {
-  const item = new Item(obj);
-
-  item.save((err) => {
-    if (err) { cb(err, null); } else { cb(null, 'congrats'); }
-  });
+const initOptions = {
+  promiseLib: Promise,
 };
 
-const deleteAll = function () {
-  Item.deleteMany({}, (err) => {
-    if (err) { console.log(err); }
-  });
+const pgp = require('pg-promise')(initOptions);
+
+const connection = {
+  user: `${pgUser}`,
+  password: `${pgPass}`,
+  host: 'localhost',
+  database: 'SingleItemPage',
+  port: 5432,
 };
 
-const deleteById = (id, cb) => {
-  Item.deleteOne({ itemId: id }, (err, item) => {
-    if (err) {
-      return cb(err, null);
-    }
-    return cb(null, item);
-  });
+console.log('connected user', connection.user)
+
+const db = pgp(connection);
+
+const getItem = (itemId, cb) => {
+  db.query(`SELECT * FROM "public"."data" WHERE "itemId" = ${itemId}`)
+    .then((result) => {
+      console.log('result', result)
+      const item = {};
+      item.altImages = [result[0].altImages];
+      item.itemId = Number(itemId);
+      console.log('item', item)
+      return cb(null, item);
+    });
 };
 
-const updateById = (id, cb) => {
-  Item.updateOne({ itemId: id }, (err, item) => {
-    if (err) {
-      return cb(err, null);
-    }
-    return cb(null, item);
-  });
+const createItem = (req, res) => {
+  let {
+    altImages,
+    itemId,
+  } = req;
+
+  db.query(`INSERT INTO "public"."data" (altImages, itemId)
+            VALUES (${altImages}, ${itemId})`, req)
+    .then(() => {
+      res.status(200);
+      res.end();
+    })
+    .catch((err) => {
+      console.error('Error');
+      res.status(500);
+      res.end();
+    });
 };
 
-const getItem = (id, cb) => {
-  Item.findOne({ itemId: id }, (err, item) => {
-    if (err) {
-      return cb(err, null);
-    }
-    return cb(null, item);
-  });
-};
 
 module.exports = {
-  createItem,
-  deleteAll,
-  deleteById,
   getItem,
-  updateById,
+  createItem,
 };

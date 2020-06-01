@@ -5,6 +5,7 @@
 /* eslint-disable linebreak-style */
 const express = require('express');
 const path = require('path');
+require('newrelic');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -14,7 +15,7 @@ app.use(express.static(path.join(__dirname, '../public/')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/api/items', (req, res) => {
+app.post('/api/items/:id', (req, res) => {
   db.createItem(req.body, (err) => {
     if (err) {
       res.status(400);
@@ -28,14 +29,8 @@ app.post('/api/items', (req, res) => {
 
 app.get('/api/items/:id', (req, res) => {
   db.getItem(req.params.id, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(400);
-      res.end();
-    } else {
       res.send(data);
       res.end();
-    }
   });
 });
 

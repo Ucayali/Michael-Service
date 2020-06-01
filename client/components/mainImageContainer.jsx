@@ -4,7 +4,6 @@ import style from '../css/style.css';
 
 
 const MainImageContainer = (props) => {
-  console.log(style);
   return(
     <div className={style.mainImageContainer} onMouseLeave={props.exit}>
       <span>
