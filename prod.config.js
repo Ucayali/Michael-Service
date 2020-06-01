@@ -4,7 +4,7 @@ const path = require('path');
 
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./client/singleItemPage.jsx",
   output: {
     path: path.resolve(__dirname, "public"),
